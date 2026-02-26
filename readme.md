@@ -6,7 +6,7 @@
 
 compose - файл для запуска valkey в каталоге **valkey**
 
-публиковать в redis/vallkey можно любым подходящим для этого средством, например _Redis Insight_. 
+публиковать в redis/vallkey можно любым подходящим для этого средством, например [Redis Insight](https://github.com/redis/RedisInsight). 
 
 ```mermaid
 architecture-beta

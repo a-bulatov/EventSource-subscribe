@@ -1,3 +1,5 @@
+import sys
+
 from redis.asyncio import Redis
 import asyncio
 import uvicorn
@@ -22,12 +24,12 @@ async def subscribe_stream(channel):
                 yield {"data": msg}
             await asyncio.sleep(0.1)
     except asyncio.CancelledError:
-        ...
         # Выход по:
         # 1. Клиент закрыл панель
         # 2. Клиент вызвал eventSource.close()
         # 3. Сервер выключается
         # raise
+        print("Отключение от браузера", flush=True)
     finally:
         try:
             await sub.unsubscribe(channel)

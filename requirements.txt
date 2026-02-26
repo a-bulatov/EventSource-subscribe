@@ -1,5 +1,4 @@
 redis
 starlette
 sse-starlette
-typing-extensions
 uvicorn

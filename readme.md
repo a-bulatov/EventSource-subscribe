@@ -13,9 +13,11 @@ architecture-beta
     service valkey(database)[Valkey]
     service server(server)[PubService]
     service browser(internet)[Browser]
-    service events(server)[Event source]
+    service events1(server)[Event source]
+    service events2(server)[Event source 2]
 
-    events:L --> R:valkey
-    valkey:L --> R:server
-    server:B --> T:browser
+    events1:L --> R:valkey
+    valkey:L <-- R:events2
+    valkey:B --> T:server
+    server:B --> T:browser   
 ```

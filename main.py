@@ -29,7 +29,7 @@ async def subscribe_stream(channel):
         # 2. Клиент вызвал eventSource.close()
         # 3. Сервер выключается
         # raise
-        print("Отключение от браузера", flush=True)
+        print(f"Отключение от браузера {channel}", flush=True)
     finally:
         try:
             await sub.unsubscribe(channel)

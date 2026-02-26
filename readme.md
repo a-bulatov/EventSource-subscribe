@@ -7,9 +7,13 @@
 публиковать в redis/vallkey можно любым подходящим для этого средством, например _Redis Insight_. 
 
 ```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
+architecture-beta
+    service valkey(database)[Valkey]
+    service server(server)[PubService]
+    service browser(internet)[Browser]
+    service events(server)[Event source]
+
+    events:L --> R:valkey
+    valkey:L --> R:server
+    server:B --> T:browser
 ```

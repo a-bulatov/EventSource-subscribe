@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>SSE Example</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .demo { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        .output { background: #f5f5f5; padding: 10px; margin: 10px 0; min-height: 50px; }
+        button { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; width: 120px; }
+        .chan-input { width: 100%; padding: 8px; border: 1px solid #ddd;  border-radius: 4px; }
+        .input-group { display: flex; gap: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Подписка ValKey</h1>
+    <div class="demo">
+        <div class="input-group">
+            <input type="text" id="chInput" class="chan-input" value=""
+                   placeholder="Введите имя канала"/>
+            <button onclick="startSub()">Подписаться</button>
+        </div>
+        <div id="finite-output" class="output">Подпишитесь на канал...</div>
+    </div>
+
+    <script>
+        let channels = {};
+
+        function startSub() {
+            const ch_in = document.getElementById('chInput');
+            const output = document.getElementById('finite-output');
+            const ch = ch_in.value.trim();
+            ch_in.value = "";
+            if(ch in channels) {
+                output.innerHTML += ch + ' : уже есть подписка<br>';
+                return;
+            }
+
+            if (Object.keys(channels).length == 0) {
+                output.innerHTML = "";
+            }
+
+            // Самая главная строка !!!!!
+            const eventSource = new EventSource('/sub/'+ch);
+
+            channels[ch] = eventSource;
+
+            eventSource.onmessage = function(event) {
+                output.innerHTML += event.data + '<br>';
+            };
+
+            eventSource.onerror = function() {
+                output.innerHTML += 'Канал '+ch+' закрыт !!!<br>';
+                eventSource.close();
+            };
+        }
+    </script>
+</body>
+</html>

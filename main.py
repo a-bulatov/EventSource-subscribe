@@ -12,9 +12,13 @@ from sse_starlette import EventSourceResponse # самая главная биб
 
 
 async def subscribe_stream(channel):
-    redis = Redis(host='localhost', port=6379, db=0, decode_responses=True)
-    sub = redis.pubsub()
-    await sub.subscribe(channel)
+    try:
+        redis = Redis(host='localhost', port=6379, db=0, decode_responses=True)
+        sub = redis.pubsub()
+        await sub.subscribe(channel)
+    except Exception as e:
+        print(f"Проблемы с redis/valkey\n{e}", flush=True)
+        return
 
     try:
         while True:

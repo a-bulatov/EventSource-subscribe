@@ -21,3 +21,26 @@ architecture-beta
     valkey:B --> T:server
     server:B --> T:browser   
 ```
+
+Процесс подписки и получения событий
+```mermaid
+sequenceDiagram
+    participant brows as Браузер
+    participant sse as Сервис подписки
+    participant pub_sub as Valkey
+    participant server as Сервер
+
+    Note over brows,server: Подписка на сообщения
+
+    brows->>sse: имя канала
+    sse->>pub_sub: подписка на канал
+    pub_sub-->>sse: квитанция о подписке
+    sse-->>brows: EventSource
+
+    Note over brows,server: Получение сообщений
+    loop 
+        server->>pub_sub: Публикация события
+        pub_sub->>sse: Сигнал по подписке
+        sse->>brows: Передача данных события в EventSource
+    end
+```
